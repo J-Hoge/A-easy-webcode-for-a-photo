@@ -1,9 +1,9 @@
-import os
+import io
 import webbrowser
 from flask import Flask, request, render_template, send_file
 import logging
 from PIL import Image
-import io
+import base64
 
 logging.getLogger('werkzeug').disabled = True
 # 禁用Flask开发服务器输出的日志信息，包括一些警告信息。这可以使Flask应用程序启动时不会在控制台输出过多的日志信息。
@@ -27,14 +27,16 @@ def index():
         rotated_image = image.rotate(180)
 
         # 将图像文件内容存储到内存缓冲区中
-        output_buffer = io.BytesIO()
-        rotated_image.save(output_buffer, format='JPEG')
-        output_buffer.seek(0)
+        buffer = io.BytesIO()
+        rotated_image.save(buffer, format='JPEG')
+        # buffer.seek(0)
+        encoded_string = base64.b64encode(buffer.getvalue()).decode('utf-8')
 
         # 返回图像文件内容
-        return send_file(output_buffer, mimetype='image/jpeg')
+        # return send_file(buffer, mimetype='image/jpeg')
+        return render_template('result.html', image_data=encoded_string)
     else:
-        return render_template('index2.html')
+        return render_template('index.html')
 
 
 if __name__ == '__main__':

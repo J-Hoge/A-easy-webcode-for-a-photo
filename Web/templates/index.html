@@ -1,27 +1,62 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>加法计算器</title>
+
+  <head>
     <meta charset="UTF-8">
+    <title>Image Rotator</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
-    
-</head>
-<body>
-    <div class="container">
-        <h1>加法计算器</h1>
-        <form method="POST" action="/">
-            <label for="num1">数字1：</label>
-            <input type="number" id="num1" name="num1" required>
-            <br><br>
-            <label for="num2">数字2：</label>
-            <input type="number" id="num2" name="num2" required>
-            <br><br>
-            <input type="submit" value="计算">
-        </form>
+    <style>
+    /* 定义人物元素的样式 */
+    .sprite {
+      text-align: center;
+      width: 100%;
+      height: 165px;
+      background-image: url('{{ url_for('static', filename='OIP.jpg') }}');
+      animation: run 0.8s steps(8) infinite;
+    }
+
+    /* 定义动画 */
+    @keyframes run {
+      from {
+        background-position: 0 0;
+      }
+      to {
+        background-position: -384px 0;
+      }
+    }
+    </style>
+    <script>
+     function showComponent() {
+      // 获取组件元素
+      var component = document.getElementById("donghua");
+      // 显示组件
+      component.style.display = "block";
+     }
+    </script>
+
+  </head>
+
+
+  <body style="background-image: url('{{ url_for('static', filename='background.jpg') }}')">
+    <h1 style="text-align: center;">Check recognition</h1>
+    <form method="POST" enctype="multipart/form-data" style="text-align: center;">
+      <input type="file" name="file" >
+      <br><br>
+      <input type="submit" value="Upload" style="margin-right: 190px;" onclick="showComponent()";>
+    </form>
+
+    <div id="donghua" style="display: none;">
+    <div class="sprite" style="text-align: center;"></div>
     </div>
-    
-    <div>
-        <img src="../static/OIP.jpg">
-    </div>
-</body>
+
+
+    {% if image %}
+    <h2>Rotated Image:</h2>
+    <img src="{{ image.url }}" alt="Rotated Image">
+    <a href="/">返回主页</a>
+    {% endif %}
+
+  </body>
+
+
 </html>

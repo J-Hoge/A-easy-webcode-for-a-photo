@@ -29,15 +29,16 @@ def index():
         # 将图像文件内容存储到内存缓冲区中
         buffer = io.BytesIO()
         rotated_image.save(buffer, format='JPEG')
-        # buffer.seek(0)
         encoded_string = base64.b64encode(buffer.getvalue()).decode('utf-8')
 
+        with open('out.txt', 'r', encoding='utf-8') as f:
+            content = f.read()
         # 返回图像文件内容
-        # return send_file(buffer, mimetype='image/jpeg')
-        return render_template('result.html', image_data=encoded_string)
+        return render_template('result.html', image_data=encoded_string, result=content)
     else:
         return render_template('index.html')
 
 
 if __name__ == '__main__':
     app.run()
+
